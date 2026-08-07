@@ -2,9 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { Menu, X } from "lucide-react";
+import { Menu, Moon, Sun, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { scrollTo } from "@/components/providers/SmoothScrollProvider";
+import { useTheme } from "@/components/providers/ThemeProvider";
+import Logo from "@/components/ui/Logo";
 
 const links = [
   { label: "Services", href: "#services" },
@@ -16,6 +18,7 @@ const links = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const { theme, toggle } = useTheme();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
@@ -48,9 +51,10 @@ export default function Navbar() {
         <nav className="mx-auto flex max-w-6xl items-center justify-between px-6">
           <button
             onClick={() => go("#top")}
-            className="font-display text-xl font-extrabold tracking-tight text-gradient"
+            aria-label="DigiGoTech home"
+            className="shrink-0 rounded-md transition-opacity hover:opacity-80"
           >
-            DigiGoTech
+            <Logo className="h-9 w-auto" />
           </button>
 
           <ul className="hidden items-center gap-8 md:flex">
@@ -68,8 +72,19 @@ export default function Navbar() {
 
           <div className="flex items-center gap-4">
             <button
+              onClick={toggle}
+              aria-label={theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-line text-ink transition-colors hover:border-cyan/50 hover:text-cyan"
+            >
+              {theme === "dark" ? (
+                <Sun className="h-5 w-5" />
+              ) : (
+                <Moon className="h-5 w-5" />
+              )}
+            </button>
+            <button
               onClick={() => go("#cta")}
-              className="hidden rounded-full bg-cyan px-5 py-2.5 text-sm font-semibold text-[#050508] transition-shadow hover:shadow-[var(--shadow-glow-cyan)] md:inline-flex"
+              className="hidden rounded-full bg-cyan px-5 py-2.5 text-sm font-semibold text-on-accent transition-shadow hover:shadow-[var(--shadow-glow-cyan)] md:inline-flex"
             >
               Get started →
             </button>
@@ -94,8 +109,8 @@ export default function Navbar() {
             className="fixed inset-0 z-[60] flex flex-col bg-base/95 backdrop-blur-xl md:hidden"
           >
             <div className="flex items-center justify-between px-6 py-5">
-              <span className="font-display text-xl font-extrabold text-gradient">
-                DigiGoTech
+              <span className="inline-block">
+                <Logo className="h-8 w-auto" />
               </span>
               <button
                 onClick={() => setOpen(false)}
@@ -127,7 +142,7 @@ export default function Navbar() {
             <div className="px-6 pb-10">
               <button
                 onClick={() => go("#cta")}
-                className="w-full rounded-full bg-cyan px-6 py-4 text-center text-base font-semibold text-[#050508]"
+                className="w-full rounded-full bg-cyan px-6 py-4 text-center text-base font-semibold text-on-accent"
               >
                 Get started →
               </button>
