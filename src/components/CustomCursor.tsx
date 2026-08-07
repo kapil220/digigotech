@@ -60,7 +60,7 @@ export default function CustomCursor() {
       style={{
         width: active ? 44 : 14,
         height: active ? 44 : 14,
-        backgroundColor: active ? "#00e5ff" : "#f0f0f8",
+        backgroundColor: active ? "var(--color-red)" : "var(--color-ink)",
       }}
     />
   );

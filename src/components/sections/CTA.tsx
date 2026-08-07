@@ -24,10 +24,7 @@ export default function CTA() {
       {/* radial cyan glow rising from the bottom */}
       <div
         className="pointer-events-none absolute bottom-0 left-1/2 h-[60vh] w-[90vw] max-w-3xl -translate-x-1/2 translate-y-1/3 rounded-full blur-3xl"
-        style={{
-          background:
-            "radial-gradient(closest-side, rgba(0,229,255,0.22), transparent 70%)",
-        }}
+        style={{ background: "var(--glow-cta)" }}
       />
 
       <div className="relative mx-auto max-w-2xl px-6 text-center">
@@ -73,7 +70,7 @@ export default function CTA() {
               />
               <button
                 type="submit"
-                className="group inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-cyan px-7 py-3.5 text-sm font-semibold text-[#050508] transition-[box-shadow,transform] hover:-translate-y-0.5 hover:shadow-[var(--shadow-glow-cyan)]"
+                className="group inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-cyan px-7 py-3.5 text-sm font-semibold text-on-accent transition-[box-shadow,transform] hover:-translate-y-0.5 hover:shadow-[var(--shadow-glow-cyan)]"
               >
                 Get in touch
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
