@@ -17,54 +17,43 @@ interface ThemeContextValue {
 }
 
 const ThemeContext = createContext<ThemeContextValue | null>(null);
+const STORAGE_KEY = "digigotech-theme";
 
-function getSystemTheme(): Theme {
-  if (typeof window === "undefined") return "dark";
-  return window.matchMedia("(prefers-color-scheme: light)").matches
-    ? "light"
-    : "dark";
-}
+export default function ThemeProvider({ children }: { children: ReactNode }) {
+  // Light is the default canvas. The inline script in layout.tsx has already
+  // stamped data-theme before paint; we adopt whatever it decided.
+  const [theme, setTheme] = useState<Theme>("light");
 
-function getInitialTheme(): Theme {
-  if (typeof window === "undefined") return "dark";
-  const saved = window.localStorage.getItem("digigotech-theme");
-  return saved === "light" || saved === "dark" ? saved : getSystemTheme();
-}
-
-export default function ThemeProvider({
-  children,
-}: {
-  children: ReactNode;
-}) {
-  const [theme, setTheme] = useState<Theme>("dark");
-
-  // Hydrate the theme on mount (avoids SSR mismatch), then apply + persist.
   useEffect(() => {
-    const t: Theme = getInitialTheme();
-    setTheme(t);
-    document.documentElement.setAttribute("data-theme", t);
+    const applied = document.documentElement.getAttribute("data-theme");
+    if (applied === "dark" || applied === "light") setTheme(applied);
   }, []);
 
-  // Keep the attribute + storage in sync whenever the theme changes.
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
-    window.localStorage.setItem("digigotech-theme", theme);
   }, [theme]);
 
-  // Follow the OS if the user has never chosen explicitly.
+  // Follow the OS until the visitor makes an explicit choice.
   useEffect(() => {
-    if (window.localStorage.getItem("digigotech-theme")) return;
-    const mq = window.matchMedia("(prefers-color-scheme: light)");
+    if (window.localStorage.getItem(STORAGE_KEY)) return;
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
     const onChange = (e: MediaQueryListEvent) =>
-      setTheme(e.matches ? "light" : "dark");
+      setTheme(e.matches ? "dark" : "light");
     mq.addEventListener("change", onChange);
     return () => mq.removeEventListener("change", onChange);
   }, []);
 
-  const toggle = useCallback(
-    () => setTheme((t) => (t === "dark" ? "light" : "dark")),
-    []
-  );
+  const toggle = useCallback(() => {
+    setTheme((t) => {
+      const next: Theme = t === "dark" ? "light" : "dark";
+      try {
+        window.localStorage.setItem(STORAGE_KEY, next);
+      } catch {
+        /* private mode — the choice just won't persist */
+      }
+      return next;
+    });
+  }, []);
 
   return (
     <ThemeContext.Provider value={{ theme, toggle }}>

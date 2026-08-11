@@ -1,8 +1,11 @@
 "use client";
 
+import Image from "next/image";
 import { useRef } from "react";
-import { motion, useScroll, useTransform } from "motion/react";
+import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import Reveal from "@/components/ui/Reveal";
+import { TopoContours } from "@/components/ui/Topo";
+import { studioImage } from "@/content/work";
 
 const stats = [
   { value: "40+", label: "Products shipped" },
@@ -11,71 +14,67 @@ const stats = [
   { value: "24/7", label: "Post-launch support" },
 ];
 
-function OrbitVisual() {
+/**
+ * A "survey plate": the photograph sits inside a contour frame, drifting
+ * against a slower-moving topographic field so the block has real depth
+ * without resorting to a drop shadow.
+ */
+function StudioPlate() {
   const ref = useRef<HTMLDivElement>(null);
+  const reduced = useReducedMotion();
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"],
   });
-  // Parallax: the whole visual drifts slower than the page.
-  const y = useTransform(scrollYProgress, [0, 1], [60, -60]);
-  const rotate = useTransform(scrollYProgress, [0, 1], [-12, 12]);
+  const y = useTransform(scrollYProgress, [0, 1], [42, -42]);
 
   return (
-    <motion.div
-      ref={ref}
-      style={{ y }}
-      className="relative mx-auto aspect-square w-full max-w-md"
-      aria-hidden="true"
-    >
-      <div className="absolute left-1/2 top-1/2 h-1/2 w-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full glow-radial blur-2xl" />
-
-      <motion.div style={{ rotate }} className="absolute inset-0">
-        {/* concentric rings */}
-        {[1, 0.72, 0.44].map((scale, i) => (
-          <div
-            key={i}
-            className="absolute left-1/2 top-1/2 rounded-full border border-line"
-            style={{
-              width: `${scale * 100}%`,
-              height: `${scale * 100}%`,
-              transform: "translate(-50%, -50%)",
-            }}
-          />
-        ))}
-
-        {/* orbiting dots */}
-        {[
-          { ring: 100, dur: 18, color: "bg-cyan", size: 12 },
-          { ring: 72, dur: 13, color: "bg-violet", size: 10 },
-          { ring: 44, dur: 9, color: "bg-amber", size: 8 },
-        ].map((o, i) => (
-          <div
-            key={i}
-            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
-            style={{
-              width: `${o.ring}%`,
-              height: `${o.ring}%`,
-              animation: `dgt-spin ${o.dur}s linear infinite`,
-            }}
-          >
-            <span
-              className={`absolute left-1/2 top-0 -translate-x-1/2 rounded-full ${o.color}`}
-              style={{
-                width: o.size,
-                height: o.size,
-                boxShadow: "0 0 16px currentColor",
-              }}
-            />
-          </div>
-        ))}
-      </motion.div>
-
-      {/* core */}
-      <div className="absolute left-1/2 top-1/2 flex h-20 w-20 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-2xl border border-cyan/30 bg-surface-2 font-display text-xl font-bold text-gradient">
-        DGT
+    <div ref={ref} className="relative mx-auto w-full max-w-lg lg:max-w-none">
+      {/* Contour field behind, offset up-left so it reads as a separate plane */}
+      <div className="pointer-events-none absolute -left-10 -top-10 bottom-16 right-16 hidden sm:block">
+        <TopoContours
+          variant="portrait"
+          opacity={0.34}
+          className="[mask-image:linear-gradient(200deg,black_10%,transparent_75%)]"
+        />
       </div>
-    </motion.div>
+
+      <motion.figure
+        style={reduced ? undefined : { y }}
+        className="group relative overflow-hidden rounded-[1.5rem] border border-line bg-sunken shadow-[var(--shadow-lift)]"
+      >
+        <div className="relative aspect-[4/5]">
+          <Image
+            src={studioImage.src}
+            alt={studioImage.alt}
+            fill
+            sizes="(max-width: 1024px) 92vw, 42vw"
+            className="photo-warm object-cover"
+          />
+          {/* Warm scrim keeps the ivory palette intact over full-colour photos */}
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 bg-gradient-to-t from-[#141413]/70 via-[#141413]/10 to-transparent"
+          />
+          {/* Contour overlay — ties the photograph to the page's motif */}
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 opacity-40 mix-blend-overlay"
+          >
+            <TopoContours variant="portrait" opacity={0.9} parallax={false} />
+          </div>
+        </div>
+
+        <figcaption className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-6">
+          <p className="max-w-[22ch] font-display text-lg leading-snug text-[#faf9f5]">
+            Built in the open, shipped every week.
+          </p>
+          <span className="tnum shrink-0 rounded-full border border-white/25 bg-black/25 px-3 py-1 text-[10px] uppercase tracking-[0.18em] text-white/85 backdrop-blur-sm">
+            Est. 2019
+          </span>
+        </figcaption>
+      </motion.figure>
+    </div>
   );
 }
 
@@ -83,48 +82,52 @@ export default function Why() {
   return (
     <section
       id="about"
-      className="relative bg-surface py-28 sm:py-36"
+      className="grain relative overflow-hidden bg-paper py-24 sm:py-36"
       aria-labelledby="why-heading"
     >
-      <div className="mx-auto grid max-w-6xl items-center gap-16 px-6 lg:grid-cols-2">
-        <div>
-          <Reveal>
-            <p className="mb-4 text-xs font-medium uppercase tracking-[0.3em] text-cyan">
-              Why DigiGoTech
-            </p>
-          </Reveal>
-          <Reveal index={1}>
-            <h2
-              id="why-heading"
-              className="font-display text-4xl font-bold leading-tight text-ink sm:text-5xl"
-            >
-              A senior team that ships like it&apos;s{" "}
-              <span className="text-gradient">their own product.</span>
-            </h2>
-          </Reveal>
-          <Reveal index={2}>
-            <p className="mt-5 text-lg text-muted">
-              No junior hand-offs, no endless tickets. You work directly with the
-              people designing and writing the code — so decisions are fast and
-              the quality bar stays high from kickoff to launch.
-            </p>
-          </Reveal>
+      <div className="shell relative">
+        <div className="grid items-center gap-16 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-24">
+          <div>
+            <Reveal>
+              <p className="eyebrow">Why DigiGoTech</p>
+            </Reveal>
+            <Reveal index={1}>
+              <h2
+                id="why-heading"
+                className="font-display type-h2 mt-6 max-w-[17ch] text-balance text-ink"
+              >
+                A senior team that ships like it&apos;s{" "}
+                <span className="accentuate">their own</span> product.
+              </h2>
+            </Reveal>
+            <Reveal index={2}>
+              <p className="type-lead mt-7 max-w-xl text-muted">
+                No junior hand-offs, no endless tickets. You work directly with
+                the people designing and writing the code — so decisions are
+                fast and the quality bar stays high from kickoff to launch.
+              </p>
+            </Reveal>
 
-          <div className="mt-12 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-4">
-            {stats.map((s, i) => (
-              <Reveal key={s.label} index={i} className="bg-surface">
-                <div className="p-5 text-center sm:text-left">
-                  <div className="font-display text-3xl font-bold text-ink">
-                    {s.value}
+            <dl className="mt-14 grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-4 lg:gap-x-6">
+              {stats.map((s, i) => (
+                <Reveal key={s.label} index={i}>
+                  <div className="border-t border-line pt-4">
+                    <dt className="font-display tnum text-3xl text-ink sm:text-[2.5rem] sm:leading-none">
+                      {s.value}
+                    </dt>
+                    <dd className="mt-2 text-xs leading-snug text-muted">
+                      {s.label}
+                    </dd>
                   </div>
-                  <div className="mt-1 text-xs text-muted">{s.label}</div>
-                </div>
-              </Reveal>
-            ))}
+                </Reveal>
+              ))}
+            </dl>
           </div>
-        </div>
 
-        <OrbitVisual />
+          <Reveal index={1}>
+            <StudioPlate />
+          </Reveal>
+        </div>
       </div>
     </section>
   );

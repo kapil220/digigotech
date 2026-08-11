@@ -1,97 +1,140 @@
 "use client";
 
+import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 import Reveal from "@/components/ui/Reveal";
+import { TopoContours } from "@/components/ui/Topo";
+import { projects, type Project } from "@/content/work";
+import { cn } from "@/lib/utils";
 
-const projects = [
-  {
-    name: "Northwind Logistics",
-    category: "Custom ERP",
-    blurb:
-      "A real-time fleet & inventory platform that replaced 4 spreadsheets and a legacy desktop app.",
-    result: "−38% dispatch time",
-    accent: "from-cyan/20 to-violet/10",
-  },
-  {
-    name: "Lumen Health",
-    category: "Mobile App",
-    blurb:
-      "A patient companion app with appointment booking, reminders, and secure messaging.",
-    result: "120k+ installs",
-    accent: "from-violet/20 to-amber/10",
-  },
-  {
-    name: "Atlas Capital",
-    category: "Web Platform",
-    blurb:
-      "An investor portal with live dashboards, document rooms, and role-based access.",
-    result: "$2B+ assets tracked",
-    accent: "from-amber/15 to-cyan/10",
-  },
-  {
-    name: "Brewhouse CRM",
-    category: "CRM System",
-    blurb:
-      "A sales pipeline and customer hub tailored to a fast-growing D2C beverage brand.",
-    result: "2.1× lead conversion",
-    accent: "from-cyan/15 to-violet/15",
-  },
-];
+function ProjectCard({
+  project: p,
+  feature = false,
+}: {
+  project: Project;
+  feature?: boolean;
+}) {
+  return (
+    <a
+      href={p.href}
+      target="_blank"
+      rel="noreferrer noopener"
+      aria-label={`${p.name} — ${p.category}, opens ${p.domain} in a new tab`}
+      className={cn(
+        "card group relative flex h-full flex-col overflow-hidden",
+        feature && "lg:flex-row"
+      )}
+    >
+      {/* Screenshot of the live site. The sunken plate behind means a slow load
+          reads as an intentional frame rather than a hole in the card. */}
+      <div
+        className={cn(
+          "relative shrink-0 overflow-hidden bg-sunken",
+          feature ? "aspect-[16/10] lg:aspect-auto lg:w-[56%]" : "aspect-[16/10]"
+        )}
+      >
+        <Image
+          src={p.image}
+          alt={p.imageAlt}
+          fill
+          sizes={
+            feature
+              ? "(max-width: 1024px) 92vw, 56vw"
+              : "(max-width: 640px) 92vw, 46vw"
+          }
+          className="photo-warm object-cover object-top"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-gradient-to-t from-[#141413]/45 via-transparent to-transparent"
+        />
+        <span className="absolute left-4 top-4 rounded-full border border-white/25 bg-black/35 px-3 py-1 text-[10px] uppercase tracking-[0.16em] text-white/90 backdrop-blur-sm">
+          {p.category}
+        </span>
+      </div>
+
+      <div
+        className={cn(
+          "flex flex-1 flex-col p-7 sm:p-9",
+          feature && "lg:justify-center lg:p-12"
+        )}
+      >
+        <div className="flex items-start justify-between gap-4">
+          <h3 className="font-display type-h3 text-ink">{p.name}</h3>
+          <ArrowUpRight className="mt-1 h-5 w-5 shrink-0 text-faint transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-accent" />
+        </div>
+
+        <p
+          className={cn(
+            "mt-3 text-[15px] leading-relaxed text-muted",
+            feature ? "max-w-md" : "max-w-sm"
+          )}
+        >
+          {p.blurb}
+        </p>
+
+        <div className="mt-auto flex flex-wrap items-center justify-between gap-x-6 gap-y-4 pt-8">
+          <p className="flex items-baseline gap-2 text-sm">
+            <span className="text-accent">{p.domain}</span>
+            <span className="text-xs text-faint">· {p.sector}</span>
+          </p>
+          <ul className="flex flex-wrap gap-2">
+            {p.stack.map((t) => (
+              <li
+                key={t}
+                className="rounded-full border border-line px-2.5 py-1 text-[11px] text-faint"
+              >
+                {t}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </a>
+  );
+}
 
 export default function Work() {
+  const [featured, ...rest] = projects;
+
   return (
     <section
       id="work"
-      className="relative bg-surface py-28 sm:py-36"
+      className="grain relative overflow-hidden bg-paper py-24 sm:py-36"
       aria-labelledby="work-heading"
     >
-      <div className="mx-auto max-w-6xl px-6">
-        <div className="mb-16 flex flex-wrap items-end justify-between gap-6">
-          <div className="max-w-2xl">
-            <Reveal>
-              <p className="mb-4 text-xs font-medium uppercase tracking-[0.3em] text-cyan">
-                Selected work
-              </p>
-            </Reveal>
-            <Reveal index={1}>
-              <h2
-                id="work-heading"
-                className="font-display text-4xl font-bold leading-tight text-ink sm:text-5xl"
-              >
-                Products we&apos;re proud of.
-              </h2>
-            </Reveal>
-          </div>
+      <TopoContours
+        variant="portrait"
+        opacity={0.16}
+        className="[mask-image:linear-gradient(to_bottom,black,transparent_60%)]"
+      />
+
+      <div className="shell relative">
+        <div className="flex flex-wrap items-end justify-between gap-8 border-t border-line pt-12">
+          <Reveal>
+            <p className="eyebrow">Selected work</p>
+            <h2
+              id="work-heading"
+              className="font-display type-h2 mt-6 max-w-[16ch] text-balance text-ink"
+            >
+              Products we&apos;re <span className="accentuate">proud</span> of.
+            </h2>
+          </Reveal>
+          <Reveal index={1}>
+            <p className="max-w-sm text-[15px] leading-relaxed text-muted">
+              Every one of these is live right now, and still ours to look
+              after. Open any card to see it for yourself.
+            </p>
+          </Reveal>
         </div>
 
-        <div className="grid gap-5 sm:grid-cols-2">
-          {projects.map((p, i) => (
-            <Reveal key={p.name} index={i} className="group">
-              <a
-                href="#contact"
-                className="relative block h-full overflow-hidden rounded-2xl border border-line bg-base p-8 transition-colors duration-300 hover:border-cyan/30"
-              >
-                <div
-                  className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${p.accent} opacity-0 transition-opacity duration-500 group-hover:opacity-100`}
-                />
-                <div className="relative">
-                  <div className="flex items-start justify-between">
-                    <span className="rounded-full border border-line px-3 py-1 text-xs text-muted">
-                      {p.category}
-                    </span>
-                    <ArrowUpRight className="h-5 w-5 text-muted transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-cyan" />
-                  </div>
-                  <h3 className="mt-8 font-display text-2xl font-semibold text-ink">
-                    {p.name}
-                  </h3>
-                  <p className="mt-2 text-[15px] leading-relaxed text-muted">
-                    {p.blurb}
-                  </p>
-                  <p className="mt-6 font-display text-lg font-semibold text-cyan">
-                    {p.result}
-                  </p>
-                </div>
-              </a>
+        <div className="mt-14 grid gap-5 sm:mt-20 sm:grid-cols-2">
+          <Reveal className="sm:col-span-2">
+            <ProjectCard project={featured} feature />
+          </Reveal>
+          {rest.map((p, i) => (
+            <Reveal key={p.slug} index={i % 2} className="h-full">
+              <ProjectCard project={p} />
             </Reveal>
           ))}
         </div>

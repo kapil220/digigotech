@@ -8,6 +8,17 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: dirname(fileURLToPath(import.meta.url)),
   },
+  images: {
+    // Case-study photography. These are curated Unsplash placeholders —
+    // swap the URLs in src/content/work.ts for real client imagery.
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+        pathname: "/**",
+      },
+    ],
+  },
 };
 
 export default nextConfig;

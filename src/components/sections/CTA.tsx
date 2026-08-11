@@ -3,6 +3,7 @@
 import { useState, type FormEvent } from "react";
 import { ArrowRight, Check } from "lucide-react";
 import Reveal from "@/components/ui/Reveal";
+import { TopoRidge } from "@/components/ui/Topo";
 
 export default function CTA() {
   const [email, setEmail] = useState("");
@@ -18,66 +19,95 @@ export default function CTA() {
   return (
     <section
       id="cta"
-      className="relative overflow-hidden bg-base py-32 sm:py-40"
+      className="grain relative overflow-hidden bg-canvas pb-32 pt-28 sm:pb-44 sm:pt-40"
       aria-labelledby="cta-heading"
     >
-      {/* radial cyan glow rising from the bottom */}
-      <div
-        className="pointer-events-none absolute bottom-0 left-1/2 h-[60vh] w-[90vw] max-w-3xl -translate-x-1/2 translate-y-1/3 rounded-full blur-3xl"
-        style={{ background: "var(--glow-cta)" }}
+      {/* The page opened on a contour plan view; it closes on the cross-section. */}
+      <TopoRidge
+        opacity={0.4}
+        className="bottom-0 h-[42vh] min-h-[240px] [mask-image:linear-gradient(to_top,black_25%,transparent)]"
       />
 
-      <div className="relative mx-auto max-w-2xl px-6 text-center">
-        <Reveal>
-          <h2
-            id="cta-heading"
-            className="font-display text-4xl font-bold leading-tight text-ink sm:text-6xl"
-          >
-            Ready to turn your vision into a product?
-          </h2>
-        </Reveal>
-        <Reveal index={1}>
-          <p className="mx-auto mt-6 max-w-xl text-lg text-muted">
-            Share your idea and we&apos;ll map out a path forward — no sales
-            pitch, just a real conversation about what&apos;s possible.
-          </p>
-        </Reveal>
-
-        <Reveal index={2}>
-          {sent ? (
-            <div className="mx-auto mt-10 flex max-w-md items-center justify-center gap-3 rounded-full border border-cyan/30 bg-surface px-6 py-4 text-cyan">
-              <Check className="h-5 w-5" />
-              <span className="text-sm font-medium">
-                Thanks — we&apos;ll be in touch within one business day.
-              </span>
-            </div>
-          ) : (
-            <form
-              onSubmit={onSubmit}
-              className="mx-auto mt-10 flex max-w-md flex-col gap-3 sm:flex-row"
+      <div className="shell relative">
+        <div className="mx-auto max-w-3xl text-center">
+          <Reveal>
+            <p className="eyebrow justify-center">Let&apos;s build</p>
+          </Reveal>
+          <Reveal index={1}>
+            <h2
+              id="cta-heading"
+              className="font-display type-h2 mt-7 text-balance text-ink"
             >
-              <label htmlFor="cta-email" className="sr-only">
-                Email address
-              </label>
-              <input
-                id="cta-email"
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@company.com"
-                className="w-full rounded-full border border-line bg-surface-2 px-6 py-3.5 text-sm text-ink placeholder:text-muted focus:border-cyan/50 focus:outline-none"
-              />
-              <button
-                type="submit"
-                className="group inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-cyan px-7 py-3.5 text-sm font-semibold text-on-accent transition-[box-shadow,transform] hover:-translate-y-0.5 hover:shadow-[var(--shadow-glow-cyan)]"
+              Ready to turn your vision into a{" "}
+              <span className="accentuate">real</span> product?
+            </h2>
+          </Reveal>
+          <Reveal index={2}>
+            <p className="type-lead mx-auto mt-7 max-w-xl text-muted">
+              Share your idea and we&apos;ll map out a path forward — no sales
+              pitch, just a real conversation about what&apos;s possible.
+            </p>
+          </Reveal>
+
+          <Reveal index={3}>
+            {sent ? (
+              <p
+                role="status"
+                className="mx-auto mt-11 inline-flex items-center gap-3 rounded-full border border-accent/30 bg-paper px-6 py-4 text-accent shadow-[var(--shadow-raise)]"
               >
-                Get in touch
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </button>
-            </form>
-          )}
-        </Reveal>
+                <Check className="h-5 w-5 shrink-0" />
+                <span className="text-sm">
+                  Thanks — we&apos;ll be in touch within one business day.
+                </span>
+              </p>
+            ) : (
+              <form
+                onSubmit={onSubmit}
+                className="mx-auto mt-11 flex max-w-md flex-col gap-3 sm:flex-row"
+              >
+                <label htmlFor="cta-email" className="sr-only">
+                  Email address
+                </label>
+                <input
+                  id="cta-email"
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="you@company.com"
+                  className="min-h-12 w-full rounded-full border border-line bg-paper px-6 text-sm text-ink shadow-[var(--shadow-raise)] transition-colors placeholder:text-faint focus:border-accent/60 focus:outline-none"
+                />
+                <button type="submit" className="btn btn-primary group shrink-0">
+                  Get in touch
+                  <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                </button>
+              </form>
+            )}
+          </Reveal>
+
+          <Reveal index={4}>
+            <p className="mt-7 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-xs text-faint">
+              <span>Or reach us directly</span>
+              <a
+                href="mailto:digigoplus@gmail.com"
+                className="link-draw text-muted"
+              >
+                digigoplus@gmail.com
+              </a>
+              <span aria-hidden="true">·</span>
+              <a
+                href="mailto:rajputkapil436@gmail.com"
+                className="link-draw text-muted"
+              >
+                rajputkapil436@gmail.com
+              </a>
+              <span aria-hidden="true">·</span>
+              <a href="tel:+917049875864" className="link-draw text-muted">
+                +91 70498 75864
+              </a>
+            </p>
+          </Reveal>
+        </div>
       </div>
     </section>
   );

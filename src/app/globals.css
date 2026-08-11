@@ -1,44 +1,103 @@
 @import "tailwindcss";
 
 /* ----------------------------------------------------------------------------
-   DigiGoTech design tokens — Red / Black / White
-   Dark theme is the default. Light theme overrides below.
+   DigiGoTech design tokens
+
+   Warm-neutral "paper" canvas (Claude/Anthropic aesthetic) carrying the
+   DigiGoTech red as the single accent. Light is the default; a warm charcoal
+   dark theme overrides the same tokens below.
+
+   Naming: base = page, paper = raised card, sunken = inset well, ink = text,
+   accent = brand red, clay = secondary warm accent used for topo line art.
 ---------------------------------------------------------------------------- */
 @theme {
-  --color-base: #050505;
-  --color-surface: #0d0d0d;
-  --color-surface-2: #141414;
-  --color-cyan: #ff3b30;
-  --color-amber: #e11d1d;
-  --color-violet: #e11d1d;
-  --color-red: #e11d1d;
-  --color-ink: #f5f5f5;
-  --color-muted: #9ca3af;
-  --color-line: rgba(255, 255, 255, 0.08);
+  /* Surfaces */
+  --color-canvas: #f2f0ea;
+  --color-paper: #faf9f5;
+  --color-sunken: #e8e5db;
+
+  /* Text */
+  --color-ink: #141413;
+  --color-muted: #6b6862;
+  --color-faint: #9a968d;
+
+  /* Accents */
+  --color-accent: #e11d1d;
+  --color-accent-deep: #a81111;
+  --color-clay: #d97757;
+
+  /* Structure */
+  --color-line: rgba(20, 20, 19, 0.11);
+  --color-line-strong: rgba(20, 20, 19, 0.2);
   --color-on-accent: #ffffff;
 
-  --font-display: var(--font-syne), ui-sans-serif, system-ui, sans-serif;
+  /* Type */
+  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
   --font-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 
-  --shadow-glow-cyan: 0 0 60px -10px rgba(255, 59, 48, 0.5);
-  --shadow-glow-amber: 0 0 60px -10px rgba(225, 29, 29, 0.45);
-  --glow-cta: radial-gradient(
-    closest-side,
-    rgba(255, 59, 48, 0.22),
-    transparent 70%
-  );
+  /* Elevation — warm-tinted, never neutral grey */
+  --shadow-raise: 0 1px 2px rgba(20, 20, 19, 0.04),
+    0 8px 24px -12px rgba(20, 20, 19, 0.14);
+  --shadow-lift: 0 2px 4px rgba(20, 20, 19, 0.05),
+    0 18px 44px -18px rgba(20, 20, 19, 0.22);
+  --shadow-accent: 0 12px 32px -12px rgba(225, 29, 29, 0.45);
+
+  /* Motion */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* ----------------------------------------------------------------------------
-   Base
+   Dark theme — warm charcoal, never pure black
 ---------------------------------------------------------------------------- */
-html {
-  background-color: var(--color-base);
+html[data-theme="dark"] {
+  --color-canvas: #171613;
+  --color-paper: #201f1b;
+  --color-sunken: #2a2823;
+
+  --color-ink: #f2f0ea;
+  --color-muted: #a8a49a;
+  --color-faint: #726e64;
+
+  --color-accent: #ff4d42;
+  --color-accent-deep: #e11d1d;
+  --color-clay: #e08a6a;
+
+  --color-line: rgba(242, 240, 234, 0.12);
+  --color-line-strong: rgba(242, 240, 234, 0.24);
+  --color-on-accent: #171613;
+
+  --shadow-raise: 0 1px 2px rgba(0, 0, 0, 0.3),
+    0 8px 24px -12px rgba(0, 0, 0, 0.6);
+  --shadow-lift: 0 2px 4px rgba(0, 0, 0, 0.35),
+    0 18px 44px -18px rgba(0, 0, 0, 0.7);
+  --shadow-accent: 0 12px 32px -12px rgba(255, 77, 66, 0.4);
+
   color-scheme: dark;
-  -webkit-font-smoothing: antialiased;
 }
 
-/* Lenis sets html.lenis; disable native smooth scroll so JS owns it */
+/* ----------------------------------------------------------------------------
+   Base — inside Tailwind's base layer so utilities always win over it.
+---------------------------------------------------------------------------- */
+@layer base {
+
+html {
+  background-color: var(--color-canvas);
+  color-scheme: light;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-padding-top: 6rem;
+}
+
+body {
+  background-color: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  /* Slightly looser default measure — this is an editorial layout. */
+  line-height: 1.65;
+}
+
+/* Lenis owns scrolling once mounted */
 html.lenis,
 html.lenis body {
   height: auto;
@@ -53,70 +112,245 @@ html.lenis body {
   overflow: hidden;
 }
 
-body {
-  background-color: var(--color-base);
-  color: var(--color-ink);
-  font-family: var(--font-body);
-  overflow-x: hidden;
-}
-
 ::selection {
-  background: var(--color-red);
-  color: var(--color-base);
+  background: var(--color-accent);
+  color: var(--color-on-accent);
 }
 
-/* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 11px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--color-base);
+  background: var(--color-canvas);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--color-surface-2);
+  background: var(--color-line-strong);
   border-radius: 9999px;
+  border: 3px solid var(--color-canvas);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-line);
+  background: var(--color-faint);
 }
 
-/* Visible keyboard focus */
 :focus-visible {
-  outline: 2px solid var(--color-red);
+  outline: 2px solid var(--color-accent);
   outline-offset: 3px;
-  border-radius: 4px;
+  border-radius: 6px;
 }
 
-/* Utilities ---------------------------------------------------------------- */
+} /* @layer base */
+
+/* ----------------------------------------------------------------------------
+   Layout, type and components — inside Tailwind's components layer, so a
+   utility class on the element always beats these defaults. Without the layer
+   this CSS is unlayered and outranks every utility, which silently breaks
+   things like `hidden md:inline-flex` on a .btn.
+---------------------------------------------------------------------------- */
+@layer components {
+
+.shell {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 1240px;
+  padding-inline: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+  .shell {
+    padding-inline: 2.5rem;
+  }
+}
+
+/* ----------------------------------------------------------------------------
+   Typography
+---------------------------------------------------------------------------- */
 .font-display {
   font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.025em;
+}
+
+/* Fluid display sizes — the editorial spine of the page. */
+.type-hero {
+  font-size: clamp(2.75rem, 1.6rem + 5.4vw, 6.5rem);
+  line-height: 0.94;
+  letter-spacing: -0.035em;
+}
+.type-h2 {
+  font-size: clamp(2rem, 1.4rem + 2.6vw, 3.75rem);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+}
+.type-h3 {
+  font-size: clamp(1.25rem, 1.1rem + 0.7vw, 1.75rem);
+  line-height: 1.15;
   letter-spacing: -0.02em;
 }
-
-.text-gradient {
-  background: linear-gradient(120deg, var(--color-cyan), var(--color-red));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+.type-lead {
+  font-size: clamp(1.0625rem, 1rem + 0.4vw, 1.3125rem);
+  line-height: 1.6;
 }
 
-.glass {
-  background: rgba(13, 13, 13, 0.6);
-  backdrop-filter: blur(14px) saturate(140%);
-  -webkit-backdrop-filter: blur(14px) saturate(140%);
+/* Italic serif emphasis — the single most "editorial" move on the page.
+   Fraunces' italic terminals overhang their advance width, so an upright word
+   set immediately after collides with them. The trailing pad buys it back. */
+.accentuate {
+  font-style: italic;
+  color: var(--color-accent);
+  font-weight: 400;
+  padding-right: 0.07em;
 }
 
-/* radial glow helper */
-.glow-radial {
-  background: radial-gradient(
-    closest-side,
-    rgba(255, 59, 48, 0.25),
-    rgba(225, 29, 29, 0.08) 60%,
-    transparent 100%
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+.eyebrow::before {
+  content: "";
+  width: 1.75rem;
+  height: 1px;
+  background: var(--color-accent);
+  flex: none;
+}
+
+/* Old-style numerals for stats — Fraunces supports them. */
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ----------------------------------------------------------------------------
+   Texture — paper grain + hairline rules
+---------------------------------------------------------------------------- */
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.4;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.42'/%3E%3C/svg%3E");
+}
+html[data-theme="dark"] .grain::after {
+  mix-blend-mode: screen;
+  opacity: 0.16;
+}
+
+/* Faint contour paper backdrop for full sections. */
+.paper-rule {
+  background-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent calc(100% - 1px),
+    var(--color-line) calc(100% - 1px)
   );
 }
 
-/* Hide the custom cursor's effect on touch / coarse pointers */
+/* ----------------------------------------------------------------------------
+   Components
+---------------------------------------------------------------------------- */
+.card {
+  background: var(--color-paper);
+  border: 1px solid var(--color-line);
+  border-radius: 1.25rem;
+  box-shadow: var(--shadow-raise);
+  transition: box-shadow 0.45s var(--ease-out-expo),
+    transform 0.45s var(--ease-out-expo), border-color 0.3s ease;
+}
+.card:hover {
+  box-shadow: var(--shadow-lift);
+  border-color: var(--color-line-strong);
+  transform: translateY(-3px);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  min-height: 48px;
+  padding: 0 1.6rem;
+  transition: transform 0.3s var(--ease-out-expo),
+    box-shadow 0.3s var(--ease-out-expo), background-color 0.25s ease,
+    border-color 0.25s ease, color 0.25s ease;
+}
+.btn-primary {
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+  box-shadow: var(--shadow-raise);
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-accent);
+}
+.btn-primary:active {
+  transform: translateY(0);
+}
+.btn-ghost {
+  border: 1px solid var(--color-line-strong);
+  color: var(--color-ink);
+  background: transparent;
+}
+.btn-ghost:hover {
+  border-color: var(--color-ink);
+  transform: translateY(-2px);
+}
+
+.glass {
+  background: color-mix(in srgb, var(--color-canvas) 78%, transparent);
+  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+}
+
+/* Underline that draws in on hover, from the left. */
+.link-draw {
+  background-image: linear-gradient(var(--color-accent), var(--color-accent));
+  background-size: 0% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 0.4s var(--ease-out-expo), color 0.25s ease;
+}
+.link-draw:hover {
+  background-size: 100% 1px;
+  color: var(--color-accent);
+}
+
+/* Imagery treatment: warmed a little toward the paper so screenshots and
+   photos sit inside the ivory palette instead of shouting over it. Relaxes to
+   true colour on hover, which is where the image earns its keep. Kept light —
+   UI screenshots go muddy fast under heavy desaturation. */
+.photo-warm {
+  filter: saturate(0.78) contrast(1.02) sepia(0.12);
+  transition: filter 0.7s var(--ease-out-expo),
+    transform 0.9s var(--ease-out-expo);
+}
+.group:hover .photo-warm {
+  filter: saturate(1) contrast(1) sepia(0);
+  transform: scale(1.04);
+}
+
+/* Theme-swapped assets (the logo lockup). Both variants are in the DOM; CSS
+   picks one, so the right artwork is painted before any JS runs. */
+.light-hidden {
+  display: none;
+}
+html[data-theme="dark"] .light-hidden {
+  display: block;
+}
+html[data-theme="dark"] .dark-hidden {
+  visibility: hidden;
+}
+
+/* Hide the native cursor only where the custom one is active. */
 @media (pointer: fine) {
   .cursor-none-fine,
   .cursor-none-fine * {
@@ -124,77 +358,11 @@ body {
   }
 }
 
+} /* @layer components */
+
 /* ----------------------------------------------------------------------------
-   Light theme — html[data-theme="light"]
+   Keyframes
 ---------------------------------------------------------------------------- */
-html[data-theme="light"] {
-  background-color: #ffffff;
-  color-scheme: light;
-}
-html[data-theme="light"] body {
-  background-color: var(--color-base);
-  color: var(--color-ink);
-}
-html[data-theme="light"] ::selection {
-  background: var(--color-red);
-  color: #ffffff;
-}
-html[data-theme="light"] ::-webkit-scrollbar-track {
-  background: var(--color-base);
-}
-html[data-theme="light"] ::-webkit-scrollbar-thumb {
-  background: var(--color-surface-2);
-}
-html[data-theme="light"] :focus-visible {
-  outline: 2px solid var(--color-red);
-}
-html[data-theme="light"] .text-gradient {
-  background: linear-gradient(120deg, #ff4d41, #c81e1e);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-html[data-theme="light"] .glass {
-  background: rgba(255, 255, 255, 0.62);
-}
-html[data-theme="light"] .glow-radial {
-  background: radial-gradient(
-    closest-side,
-    rgba(255, 59, 48, 0.18),
-    rgba(225, 29, 29, 0.05) 60%,
-    transparent 100%
-  );
-}
-
-/* Light value overrides for the theme tokens */
-html[data-theme="light"] {
-  --color-base: #ffffff;
-  --color-surface: #fafafa;
-  --color-surface-2: #f0f0f0;
-  --color-cyan: #ff4d41;
-  --color-amber: #dc2626;
-  --color-violet: #dc2626;
-  --color-red: #dc2626;
-  --color-ink: #0b0b0b;
-  --color-muted: #5b6270;
-  --color-line: rgba(0, 0, 0, 0.08);
-  --color-on-accent: #ffffff;
-  --shadow-glow-cyan: 0 0 60px -10px rgba(220, 38, 38, 0.45);
-  --shadow-glow-amber: 0 0 60px -10px rgba(220, 38, 38, 0.4);
-  --glow-cta: radial-gradient(
-    closest-side,
-    rgba(220, 38, 38, 0.16),
-    transparent 70%
-  );
-}
-
-/* Keyframes ---------------------------------------------------------------- */
-@keyframes dgt-spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 @keyframes dgt-marquee {
   from {
     transform: translateX(0);
@@ -205,7 +373,19 @@ html[data-theme="light"] {
   }
 }
 
-/* Reduced motion: neutralise transforms/animations site-wide */
+@keyframes dgt-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -14px, 0);
+  }
+}
+
+/* ----------------------------------------------------------------------------
+   Reduced motion
+---------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -214,5 +394,8 @@ html[data-theme="light"] {
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
+  }
+  .card:hover {
+    transform: none;
   }
 }
