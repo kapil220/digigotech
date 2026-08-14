@@ -102,7 +102,7 @@ export default function CTA() {
                 rajputkapil436@gmail.com
               </a>
               <span aria-hidden="true">·</span>
-              <a href="tel:+917049875864" className="link-draw text-muted">
+              <a href="tel:+919644242808" className="link-draw text-muted">
                 +91 70498 75864
               </a>
             </p>

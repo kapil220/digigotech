@@ -28,7 +28,7 @@ const columns = [
         label: "rajputkapil436@gmail.com",
         href: "mailto:rajputkapil436@gmail.com",
       },
-      { label: "+91 70498 75864", href: "tel:+917049875864" },
+      { label: "+91 70498 75864", href: "tel:+919644242808" },
       { label: "Start a project", href: "#cta" },
     ],
   },
