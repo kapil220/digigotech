@@ -103,7 +103,7 @@ export default function CTA() {
               </a>
               <span aria-hidden="true">·</span>
               <a href="tel:+919644242808" className="link-draw text-muted">
-                +91 70498 75864
+                +91 96442 42808
               </a>
             </p>
           </Reveal>
