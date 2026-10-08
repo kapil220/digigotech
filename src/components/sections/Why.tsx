@@ -3,7 +3,9 @@
 import Image from "next/image";
 import { useRef } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { ArrowRight } from "lucide-react";
 import Reveal from "@/components/ui/Reveal";
+import { useLead } from "@/components/lead/LeadProvider";
 import { TopoContours } from "@/components/ui/Topo";
 import { studioImage } from "@/content/work";
 
@@ -79,6 +81,7 @@ function StudioPlate() {
 }
 
 export default function Why() {
+  const { openLead } = useLead();
   return (
     <section
       id="about"
@@ -106,6 +109,15 @@ export default function Why() {
                 the people designing and writing the code — so decisions are
                 fast and the quality bar stays high from kickoff to launch.
               </p>
+            </Reveal>
+            <Reveal index={3}>
+              <button
+                onClick={() => openLead("about")}
+                className="btn btn-primary group mt-9"
+              >
+                Talk to the team
+                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </button>
             </Reveal>
 
             <dl className="mt-14 grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-4 lg:gap-x-6">

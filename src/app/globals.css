@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+/* Laptop-height viewports: lets the hero tighten up so its buttons and proof
+   rail stay on the first screen instead of sliding below the fold. */
+@custom-variant short (@media (min-width: 1024px) and (max-height: 860px));
+
 /* ----------------------------------------------------------------------------
    Nexopsdev Technologies design tokens
 
@@ -172,7 +176,9 @@ html.lenis body {
 
 /* Fluid display sizes — the editorial spine of the page. */
 .type-hero {
-  font-size: clamp(2.75rem, 1.6rem + 5.4vw, 6.5rem);
+  /* Capped by viewport height too, so three lines never crowd out the rest of
+     the hero on a wide-but-short laptop screen. */
+  font-size: min(clamp(2.75rem, 1.6rem + 5.4vw, 6.5rem), 12.5svh);
   line-height: 0.94;
   letter-spacing: -0.035em;
 }
@@ -303,6 +309,34 @@ html[data-theme="dark"] .grain::after {
 .btn-ghost:hover {
   border-color: var(--color-ink);
   transform: translateY(-2px);
+}
+
+/* Form controls for the enquiry form. */
+.field {
+  width: 100%;
+  min-height: 48px;
+  border-radius: 0.875rem;
+  border: 1px solid var(--color-line-strong);
+  background: var(--color-canvas);
+  padding: 0 1rem;
+  font-size: 0.9375rem;
+  color: var(--color-ink);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.field::placeholder {
+  color: var(--color-faint);
+}
+.field:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 18%, transparent);
+}
+.field-label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--color-muted);
 }
 
 .glass {
