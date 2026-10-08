@@ -17,6 +17,13 @@ export function scrollTo(target: string | number, offset = 0) {
   }
 }
 
+/** Freeze page scrolling while an overlay (the enquiry popup) is open. */
+export function lockScroll(locked: boolean) {
+  document.body.style.overflow = locked ? "hidden" : "";
+  if (locked) lenisInstance?.stop();
+  else lenisInstance?.start();
+}
+
 /**
  * Wraps the app in Lenis smooth scrolling and keeps GSAP ScrollTrigger in
  * lockstep: ScrollTrigger.update fires on every Lenis scroll event, and Lenis'

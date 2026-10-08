@@ -33,7 +33,7 @@ export default function CustomCursor() {
       target.x = e.clientX;
       target.y = e.clientY;
       const el = e.target as HTMLElement | null;
-      setActive(!!el?.closest?.("a, button, input, label, [data-cursor]"));
+      setActive(!!el?.closest?.("a, button, input, select, textarea, label, [data-cursor]"));
     };
 
     const render = () => {

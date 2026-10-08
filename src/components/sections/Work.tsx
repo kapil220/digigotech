@@ -6,6 +6,7 @@ import Reveal from "@/components/ui/Reveal";
 import { TopoContours } from "@/components/ui/Topo";
 import { projects, type Project } from "@/content/work";
 import { cn } from "@/lib/utils";
+import SectionCTA from "@/components/lead/SectionCTA";
 
 function ProjectCard({
   project: p,
@@ -138,6 +139,13 @@ export default function Work() {
             </Reveal>
           ))}
         </div>
+
+        <SectionCTA
+          title="Want yours on this list?"
+          copy="Send us a short brief and we'll come back with a plan and an honest estimate."
+          label="Start your project"
+          source="work"
+        />
       </div>
     </section>
   );

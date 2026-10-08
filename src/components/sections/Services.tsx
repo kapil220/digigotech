@@ -3,6 +3,7 @@
 import { Globe2, Smartphone, Database, Boxes, Bot } from "lucide-react";
 import Reveal from "@/components/ui/Reveal";
 import { TopoChip } from "@/components/ui/Topo";
+import SectionCTA from "@/components/lead/SectionCTA";
 
 /**
  * AI agents lead the section rather than sitting fifth in a grid — it's the
@@ -159,6 +160,13 @@ export default function Services() {
             </Reveal>
           ))}
         </div>
+
+        <SectionCTA
+          title="Not sure which one you need?"
+          copy="Tell us the problem — we'll tell you what we'd build and what it would take."
+          label="Get a free consultation"
+          source="services"
+        />
       </div>
     </section>
   );

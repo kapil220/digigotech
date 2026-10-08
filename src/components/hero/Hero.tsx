@@ -5,6 +5,7 @@ import { motion, useReducedMotion, useScroll, useTransform } from "motion/react"
 import { ArrowRight, ArrowDown } from "lucide-react";
 import { scrollTo } from "@/components/providers/SmoothScrollProvider";
 import { TopoContours } from "@/components/ui/Topo";
+import { useLead } from "@/components/lead/LeadProvider";
 
 const lines = [
   [{ t: "We build the" }],
@@ -21,6 +22,7 @@ const rail = [
 export default function Hero() {
   const ref = useRef<HTMLElement>(null);
   const reduced = useReducedMotion();
+  const { openLead } = useLead();
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
@@ -34,7 +36,7 @@ export default function Hero() {
     <section
       ref={ref}
       id="top"
-      className="grain relative flex min-h-[100svh] w-full flex-col justify-end overflow-hidden pb-12 pt-36 sm:pb-16"
+      className="grain relative flex min-h-[100svh] w-full flex-col justify-end overflow-hidden pb-12 pt-36 sm:pb-16 short:pb-10 short:pt-28"
       aria-label="Introduction"
     >
       <TopoContours
@@ -56,7 +58,7 @@ export default function Hero() {
           Digital Product Studio
         </motion.p>
 
-        <h1 className="font-display type-hero mt-7 max-w-[16ch] text-ink">
+        <h1 className="font-display type-hero mt-7 max-w-[16ch] text-ink short:mt-5">
           {lines.map((line, li) => (
             <span key={li} className="block overflow-hidden pb-[0.08em]">
               <motion.span
@@ -87,18 +89,18 @@ export default function Hero() {
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.62, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-9 grid gap-10 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end"
+          className="mt-9 grid gap-10 short:mt-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end"
         >
-          <div className="max-w-xl">
+          <div className="max-w-2xl">
             <p className="type-lead text-muted">
               AI agents that automate the work, plus the websites, mobile apps,
               CRM &amp; ERP systems and custom platforms around them — designed
               and engineered to scale with founders and growing teams.
             </p>
 
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-9 flex flex-col gap-3 short:mt-7 sm:flex-row">
               <button
-                onClick={() => scrollTo("#cta")}
+                onClick={() => openLead("hero")}
                 className="btn btn-primary group"
               >
                 Start a project
@@ -133,7 +135,7 @@ export default function Hero() {
         transition={{ delay: 1.1, duration: 0.8 }}
         onClick={() => scrollTo("#services")}
         aria-label="Scroll to services"
-        className="shell relative z-10 mt-14 flex items-center gap-3 text-[11px] uppercase tracking-[0.22em] text-faint transition-colors hover:text-accent"
+        className="shell relative z-10 mt-14 flex items-center short:hidden gap-3 text-[11px] uppercase tracking-[0.22em] text-faint transition-colors hover:text-accent"
       >
         <ArrowDown className="h-3.5 w-3.5 motion-safe:[animation:dgt-drift_2.6s_ease-in-out_infinite]" />
         Scroll

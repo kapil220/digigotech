@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { scrollTo } from "@/components/providers/SmoothScrollProvider";
 import { useTheme } from "@/components/providers/ThemeProvider";
 import Logo from "@/components/ui/Logo";
+import { useLead } from "@/components/lead/LeadProvider";
 
 const links = [
   { label: "Services", href: "#services" },
@@ -20,6 +21,7 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState<string>("");
   const { theme, toggle } = useTheme();
+  const { openLead } = useLead();
 
   const { scrollYProgress } = useScroll();
   const progress = useSpring(scrollYProgress, {
@@ -141,7 +143,7 @@ export default function Navbar() {
             </button>
 
             <button
-              onClick={() => go("#cta")}
+              onClick={() => openLead("navbar")}
               className="btn btn-primary hidden min-h-11 px-5 text-sm md:inline-flex"
             >
               Start a project
@@ -211,7 +213,10 @@ export default function Navbar() {
 
             <div className="shell pb-10">
               <button
-                onClick={() => go("#cta")}
+                onClick={() => {
+                  setOpen(false);
+                  openLead("mobile-menu");
+                }}
                 className="btn btn-primary min-h-14 w-full"
               >
                 Start a project

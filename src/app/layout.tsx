@@ -3,6 +3,7 @@ import { Fraunces, Inter } from "next/font/google";
 import "./globals.css";
 import SmoothScrollProvider from "@/components/providers/SmoothScrollProvider";
 import ThemeProvider from "@/components/providers/ThemeProvider";
+import LeadProvider from "@/components/lead/LeadProvider";
 import Navbar from "@/components/Navbar";
 import CustomCursor from "@/components/CustomCursor";
 import PageLoader from "@/components/PageLoader";
@@ -80,8 +81,10 @@ export default function RootLayout({
         <CustomCursor />
         <ThemeProvider>
           <SmoothScrollProvider>
-            <Navbar />
-            {children}
+            <LeadProvider>
+              <Navbar />
+              {children}
+            </LeadProvider>
           </SmoothScrollProvider>
         </ThemeProvider>
       </body>

@@ -1,7 +1,9 @@
 "use client";
 
 import Reveal from "@/components/ui/Reveal";
+import { ArrowRight } from "lucide-react";
 import { TopoChip } from "@/components/ui/Topo";
+import { useLead } from "@/components/lead/LeadProvider";
 
 const steps = [
   {
@@ -35,6 +37,7 @@ const steps = [
 ];
 
 export default function Process() {
+  const { openLead } = useLead();
   return (
     <section
       id="process"
@@ -57,6 +60,13 @@ export default function Process() {
                 Four stages, no mystery. You always know what we&apos;re doing
                 this week and what you&apos;ll see at the end of it.
               </p>
+              <button
+                onClick={() => openLead("process")}
+                className="btn btn-primary group mt-8"
+              >
+                Book a discovery call
+                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </button>
             </Reveal>
           </div>
 
