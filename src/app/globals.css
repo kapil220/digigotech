@@ -1,76 +1,76 @@
 @import "tailwindcss";
 
 /* ----------------------------------------------------------------------------
-   DigiGoTech design tokens
+   Nexopsdev Technologies design tokens
 
-   Warm-neutral "paper" canvas (Claude/Anthropic aesthetic) carrying the
-   DigiGoTech red as the single accent. Light is the default; a warm charcoal
-   dark theme overrides the same tokens below.
+   Official brand palette matching the logo lockup: Electric Blue (#0060F8)
+   and Midnight Navy (#041034). Light theme uses a crisp tech-studio canvas;
+   a deep midnight dark theme overrides the tokens below.
 
    Naming: base = page, paper = raised card, sunken = inset well, ink = text,
-   accent = brand red, clay = secondary warm accent used for topo line art.
+   accent = logo electric blue, clay = sky cyan secondary accent for topo line art.
 ---------------------------------------------------------------------------- */
 @theme {
   /* Surfaces */
-  --color-canvas: #f2f0ea;
-  --color-paper: #faf9f5;
-  --color-sunken: #e8e5db;
+  --color-canvas: #f4f6fc;
+  --color-paper: #ffffff;
+  --color-sunken: #e9eef8;
 
   /* Text */
-  --color-ink: #141413;
-  --color-muted: #6b6862;
-  --color-faint: #9a968d;
+  --color-ink: #041034;
+  --color-muted: #4a5d78;
+  --color-faint: #8898b0;
 
   /* Accents */
-  --color-accent: #e11d1d;
-  --color-accent-deep: #a81111;
-  --color-clay: #d97757;
+  --color-accent: #0060f8;
+  --color-accent-deep: #0045d8;
+  --color-clay: #00a3ff;
 
   /* Structure */
-  --color-line: rgba(20, 20, 19, 0.11);
-  --color-line-strong: rgba(20, 20, 19, 0.2);
+  --color-line: rgba(4, 16, 52, 0.09);
+  --color-line-strong: rgba(4, 16, 52, 0.18);
   --color-on-accent: #ffffff;
 
   /* Type */
   --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
   --font-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 
-  /* Elevation — warm-tinted, never neutral grey */
-  --shadow-raise: 0 1px 2px rgba(20, 20, 19, 0.04),
-    0 8px 24px -12px rgba(20, 20, 19, 0.14);
-  --shadow-lift: 0 2px 4px rgba(20, 20, 19, 0.05),
-    0 18px 44px -18px rgba(20, 20, 19, 0.22);
-  --shadow-accent: 0 12px 32px -12px rgba(225, 29, 29, 0.45);
+  /* Elevation — tech-blue tinted shadows */
+  --shadow-raise: 0 1px 2px rgba(4, 16, 52, 0.04),
+    0 8px 24px -12px rgba(4, 16, 52, 0.12);
+  --shadow-lift: 0 2px 4px rgba(4, 16, 52, 0.06),
+    0 18px 44px -18px rgba(0, 96, 248, 0.18);
+  --shadow-accent: 0 12px 32px -12px rgba(0, 96, 248, 0.45);
 
   /* Motion */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* ----------------------------------------------------------------------------
-   Dark theme — warm charcoal, never pure black
+   Dark theme — deep midnight navy (#040914) derived from the logo background
 ---------------------------------------------------------------------------- */
 html[data-theme="dark"] {
-  --color-canvas: #171613;
-  --color-paper: #201f1b;
-  --color-sunken: #2a2823;
+  --color-canvas: #040914;
+  --color-paper: #0a1328;
+  --color-sunken: #101c38;
 
-  --color-ink: #f2f0ea;
-  --color-muted: #a8a49a;
-  --color-faint: #726e64;
+  --color-ink: #f4f7ff;
+  --color-muted: #889bb8;
+  --color-faint: #4a5d7a;
 
-  --color-accent: #ff4d42;
-  --color-accent-deep: #e11d1d;
-  --color-clay: #e08a6a;
+  --color-accent: #0060f8;
+  --color-accent-deep: #0045d8;
+  --color-clay: #38bdf8;
 
-  --color-line: rgba(242, 240, 234, 0.12);
-  --color-line-strong: rgba(242, 240, 234, 0.24);
-  --color-on-accent: #171613;
+  --color-line: rgba(244, 247, 255, 0.1);
+  --color-line-strong: rgba(244, 247, 255, 0.2);
+  --color-on-accent: #ffffff;
 
-  --shadow-raise: 0 1px 2px rgba(0, 0, 0, 0.3),
+  --shadow-raise: 0 1px 2px rgba(0, 0, 0, 0.4),
     0 8px 24px -12px rgba(0, 0, 0, 0.6);
-  --shadow-lift: 0 2px 4px rgba(0, 0, 0, 0.35),
-    0 18px 44px -18px rgba(0, 0, 0, 0.7);
-  --shadow-accent: 0 12px 32px -12px rgba(255, 77, 66, 0.4);
+  --shadow-lift: 0 2px 4px rgba(0, 0, 0, 0.4),
+    0 18px 44px -18px rgba(0, 96, 248, 0.35);
+  --shadow-accent: 0 12px 32px -12px rgba(0, 96, 248, 0.55);
 
   color-scheme: dark;
 }
