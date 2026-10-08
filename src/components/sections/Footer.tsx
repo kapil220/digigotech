@@ -46,7 +46,7 @@ export default function Footer() {
           <div>
             <a
               href="#top"
-              aria-label="DigiGoTech home"
+              aria-label="Nexopsdev Technologies home"
               className="inline-block rounded-md transition-opacity hover:opacity-70"
             >
               <Logo size="lg" />
@@ -82,7 +82,7 @@ export default function Footer() {
 
         <div className="flex flex-col-reverse items-center justify-between gap-4 border-t border-line py-8 sm:flex-row">
           <p className="text-xs text-faint">
-            © {new Date().getFullYear()} DigiGoTech. All rights reserved.
+            © {new Date().getFullYear()} Nexopsdev Technologies. All rights reserved.
           </p>
           <ul className="flex items-center gap-6 text-xs text-faint">
             <li>

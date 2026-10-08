@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, type Variants } from "motion/react";
-import type { ComponentType, ReactNode } from "react";
+import type { ReactNode } from "react";
 
 const variants: Variants = {
   hidden: { y: 32, opacity: 0 },
@@ -34,19 +34,17 @@ export default function Reveal({
   className,
   as = "div",
 }: RevealProps) {
-  // motion[as] is a union of component types; cast to a single permissive
-  // component so the shared motion props typecheck cleanly.
-  const MotionTag = motion[as] as ComponentType<Record<string, unknown>>;
-  return (
-    <MotionTag
-      className={className}
-      custom={index}
-      variants={variants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "0px 0px -12% 0px" }}
-    >
-      {children}
-    </MotionTag>
-  );
+  const commonProps = {
+    className,
+    custom: index,
+    variants,
+    initial: "hidden" as const,
+    whileInView: "visible" as const,
+    viewport: { once: true, margin: "0px 0px -12% 0px" },
+  };
+
+  if (as === "li") return <motion.li {...commonProps}>{children}</motion.li>;
+  if (as === "span") return <motion.span {...commonProps}>{children}</motion.span>;
+  if (as === "section") return <motion.section {...commonProps}>{children}</motion.section>;
+  return <motion.div {...commonProps}>{children}</motion.div>;
 }
