@@ -7,17 +7,11 @@ import logoMark from "@/assets/logo-mark.png";
 import { cn } from "@/lib/utils";
 
 /**
- * The DigiGoTech lockup — the original brand artwork, with the white plate
- * keyed out to transparency so it sits on the ivory canvas without a box.
+ * The Nexopsdev Technologies lockup — official brand artwork.
  *
- * Two colour variants ship: the stock artwork for light, and one where the navy
- * wordmark is recoloured to ivory for dark (the reds are untouched in both).
+ * Two colour variants ship: light theme artwork and dark theme artwork.
  * Both are in the DOM and swapped with CSS, so the right one is showing on
  * first paint — no flash, no dependency on hydration.
- *
- * Two crops ship too: the compact lockup drops the
- * TECHNOLOGY. INNOVATION. GROWTH. rule, which is unreadable below ~60px, and
- * the full lockup keeps it for the footer where there's room to read it.
  */
 
 const sizes = {
@@ -26,17 +20,17 @@ const sizes = {
   lg: "h-14",
 } as const;
 
-/** Sizes at which the tagline rule is legible enough to keep. */
+/** Sizes at which the full lockup is used. */
 const FULL_LOCKUP: ReadonlySet<keyof typeof sizes> = new Set(["lg"]);
 
 export function LogoMark({ className }: { className?: string }) {
   return (
     <Image
       src={logoMark}
-      alt=""
+      alt="Nexopsdev Technologies mark"
       aria-hidden="true"
       priority
-      className={cn("h-full w-auto", className)}
+      className={cn("h-full w-auto object-contain", className)}
     />
   );
 }
@@ -44,7 +38,7 @@ export function LogoMark({ className }: { className?: string }) {
 interface LogoProps {
   className?: string;
   size?: keyof typeof sizes;
-  /** Render the "d" mark alone, without the wordmark. */
+  /** Render the mark alone, without the wordmark. */
   markOnly?: boolean;
 }
 
@@ -65,14 +59,14 @@ export default function Logo({
     <span
       className={cn("relative inline-block", sizes[size], className)}
       role="img"
-      aria-label="DigiGoTech"
+      aria-label="Nexopsdev Technologies"
     >
-      <Image src={light} alt="" priority className="h-full w-auto dark-hidden" />
+      <Image src={light} alt="Nexopsdev Technologies" priority className="h-full w-auto object-contain dark-hidden" />
       <Image
         src={dark}
-        alt=""
+        alt="Nexopsdev Technologies"
         priority
-        className="light-hidden absolute inset-0 h-full w-auto"
+        className="light-hidden absolute inset-0 h-full w-auto object-contain"
       />
     </span>
   );

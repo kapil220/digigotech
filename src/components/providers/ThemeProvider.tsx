@@ -17,7 +17,7 @@ interface ThemeContextValue {
 }
 
 const ThemeContext = createContext<ThemeContextValue | null>(null);
-const STORAGE_KEY = "digigotech-theme";
+const STORAGE_KEY = "nexopsdev-theme";
 
 export default function ThemeProvider({ children }: { children: ReactNode }) {
   // Light is the default canvas. The inline script in layout.tsx has already

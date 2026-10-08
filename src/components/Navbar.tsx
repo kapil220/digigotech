@@ -86,7 +86,7 @@ export default function Navbar() {
         <nav className="shell flex items-center justify-between gap-6">
           <button
             onClick={() => go("#top")}
-            aria-label="DigiGoTech home"
+            aria-label="Nexopsdev Technologies home"
             className="shrink-0 rounded-md transition-opacity hover:opacity-70"
           >
             <Logo size="md" />
