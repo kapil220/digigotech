@@ -8,7 +8,7 @@ import { projects, type Project } from "@/content/work";
 import { cn } from "@/lib/utils";
 import SectionCTA from "@/components/lead/SectionCTA";
 
-function ProjectCard({
+export function ProjectCard({
   project: p,
   feature = false,
 }: {

@@ -6,6 +6,7 @@ import { ArrowRight, ArrowDown } from "lucide-react";
 import { scrollTo } from "@/components/providers/SmoothScrollProvider";
 import { TopoContours } from "@/components/ui/Topo";
 import { useLead } from "@/components/lead/LeadProvider";
+import { stats } from "@/content/site";
 
 const lines = [
   [{ t: "We build the" }],
@@ -13,11 +14,7 @@ const lines = [
   [{ t: "great companies." }],
 ];
 
-const rail = [
-  { k: "40+", v: "products shipped" },
-  { k: "6 wks", v: "to first launch" },
-  { k: "98%", v: "client retention" },
-];
+const rail = stats.slice(0, 3);
 
 export default function Hero() {
   const ref = useRef<HTMLElement>(null);
@@ -55,7 +52,7 @@ export default function Hero() {
           transition={{ delay: 0.15, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           className="eyebrow"
         >
-          Digital Product Studio
+          Software &amp; AI development company · Indore, India
         </motion.p>
 
         <h1 className="font-display type-hero mt-7 max-w-[16ch] text-ink short:mt-5">
@@ -93,9 +90,10 @@ export default function Hero() {
         >
           <div className="max-w-2xl">
             <p className="type-lead text-muted">
-              AI agents that automate the work, plus the websites, mobile apps,
-              CRM &amp; ERP systems and custom platforms around them — designed
-              and engineered to scale with founders and growing teams.
+              AI agents, chatbots, voicebots and WhatsApp automation that do
+              the work, plus the websites, e-commerce stores, SaaS products,
+              mobile apps and ERP &amp; CRM systems around them — designed and
+              engineered in Indore for founders and growing businesses.
             </p>
 
             <div className="mt-9 flex flex-col gap-3 short:mt-7 sm:flex-row">
@@ -118,11 +116,11 @@ export default function Hero() {
           {/* Proof rail — hairline-separated, quiet, numeric. */}
           <dl className="flex divide-x divide-line border-y border-line py-5 lg:border-y-0 lg:py-0">
             {rail.map((r) => (
-              <div key={r.k} className="px-5 first:pl-0 lg:px-7">
+              <div key={r.label} className="px-5 first:pl-0 lg:px-7">
                 <dt className="font-display tnum text-2xl text-ink sm:text-3xl">
-                  {r.k}
+                  {r.value}
                 </dt>
-                <dd className="mt-1 text-xs text-muted">{r.v}</dd>
+                <dd className="mt-1 text-xs lowercase text-muted">{r.label}</dd>
               </div>
             ))}
           </dl>

@@ -7,14 +7,8 @@ import { ArrowRight } from "lucide-react";
 import Reveal from "@/components/ui/Reveal";
 import { useLead } from "@/components/lead/LeadProvider";
 import { TopoContours } from "@/components/ui/Topo";
+import { site, stats } from "@/content/site";
 import { studioImage } from "@/content/work";
-
-const stats = [
-  { value: "40+", label: "Products shipped" },
-  { value: "6 wks", label: "Avg. to first launch" },
-  { value: "98%", label: "Client retention" },
-  { value: "24/7", label: "Post-launch support" },
-];
 
 /**
  * A "survey plate": the photograph sits inside a contour frame, drifting
@@ -72,7 +66,7 @@ function StudioPlate() {
             Built in the open, shipped every week.
           </p>
           <span className="tnum shrink-0 rounded-full border border-white/25 bg-black/25 px-3 py-1 text-[10px] uppercase tracking-[0.18em] text-white/85 backdrop-blur-sm">
-            Est. 2019
+            Est. {site.foundingYear}
           </span>
         </figcaption>
       </motion.figure>
@@ -105,9 +99,10 @@ export default function Why() {
             </Reveal>
             <Reveal index={2}>
               <p className="type-lead mt-7 max-w-xl text-muted">
-                No junior hand-offs, no endless tickets. You work directly with
-                the people designing and writing the code — so decisions are
-                fast and the quality bar stays high from kickoff to launch.
+                No junior hand-offs, no endless tickets. From our studio in
+                Indore you work directly with the people designing and writing
+                the code — so decisions are fast and the quality bar stays high
+                from kickoff to launch.
               </p>
             </Reveal>
             <Reveal index={3}>

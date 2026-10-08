@@ -7,6 +7,11 @@ import LeadProvider from "@/components/lead/LeadProvider";
 import Navbar from "@/components/Navbar";
 import CustomCursor from "@/components/CustomCursor";
 import PageLoader from "@/components/PageLoader";
+import Footer from "@/components/sections/Footer";
+import JsonLd from "@/components/seo/JsonLd";
+import { serviceGroups, servicePath } from "@/content/services";
+import { site } from "@/content/site";
+import { organizationSchema, websiteSchema } from "@/lib/schema";
 
 /**
  * Fraunces carries the editorial voice — a warm, slightly wonky serif that
@@ -26,28 +31,68 @@ const inter = Inter({
   display: "swap",
 });
 
+/** Names and links only — keeps the full service copy out of the client bundle. */
+const navServiceGroups = serviceGroups.map((g) => ({
+  heading: g.heading,
+  links: g.services.map((s) => ({ name: s.name, href: servicePath(s.slug) })),
+}));
+
+const defaultDescription =
+  "Software and AI development company in Indore, India. Websites, e-commerce, SaaS, ERP, mobile apps, AI agents, chatbots, voicebots and WhatsApp automation.";
+const defaultTitle = "Software & AI Development Company in Indore, India";
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://nexopsdev.com"),
-  title: "Nexopsdev Technologies — AI agents and software for growing businesses",
-  description:
-    "A senior software studio building AI agents and business automation, websites, mobile apps, CRM & ERP systems, and custom platforms for founders and growing businesses.",
-  keywords: [
-    "AI agents",
-    "business automation",
-    "workflow automation",
-    "software studio",
-    "web development",
-    "mobile apps",
-    "CRM",
-    "ERP",
-    "custom software",
-  ],
-  openGraph: {
-    title: "Nexopsdev Technologies — Digital Product Studio",
-    description:
-      "AI agents and business automation, websites, mobile apps, CRM & ERP, and custom software — designed and engineered to scale.",
-    type: "website",
+  metadataBase: new URL(site.url),
+  title: {
+    default: `${defaultTitle} | ${site.name}`,
+    template: `%s | ${site.name}`,
   },
+  description: defaultDescription,
+  applicationName: site.name,
+  keywords: [
+    "software development company in Indore",
+    "IT company in Indore",
+    "website development company in Indore",
+    "e-commerce website development",
+    "SaaS development company",
+    "ERP software development",
+    "CRM development",
+    "mobile app development",
+    "AI agent development",
+    "AI chatbot development",
+    "AI voicebot",
+    "WhatsApp automation",
+    "business automation",
+  ],
+  authors: [{ name: site.name, url: site.url }],
+  creator: site.name,
+  publisher: site.name,
+  formatDetection: { telephone: true, email: true, address: false },
+  openGraph: {
+    type: "website",
+    siteName: site.name,
+    locale: "en_IN",
+    url: "/",
+    title: `${defaultTitle} | ${site.name}`,
+    description: defaultDescription,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${defaultTitle} | ${site.name}`,
+    description: defaultDescription,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  category: "technology",
 };
 
 export default function RootLayout({
@@ -59,7 +104,7 @@ export default function RootLayout({
     // The inline script below stamps data-theme before hydration, so the
     // server markup intentionally differs from the client on this element.
     <html
-      lang="en"
+      lang="en-IN"
       suppressHydrationWarning
       className={`${fraunces.variable} ${inter.variable}`}
     >
@@ -71,6 +116,8 @@ export default function RootLayout({
             __html: `(function(){try{var t=localStorage.getItem("nexopsdev-theme");if(t!=="light"&&t!=="dark"){t=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}document.documentElement.setAttribute("data-theme",t)}catch(e){document.documentElement.setAttribute("data-theme","light")}})()`,
           }}
         />
+        <JsonLd data={organizationSchema()} />
+        <JsonLd data={websiteSchema()} />
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:left-6 focus:top-6 focus:z-[300] focus:rounded-full focus:bg-accent focus:px-5 focus:py-3 focus:text-sm focus:text-on-accent"
@@ -82,8 +129,9 @@ export default function RootLayout({
         <ThemeProvider>
           <SmoothScrollProvider>
             <LeadProvider>
-              <Navbar />
+              <Navbar serviceGroups={navServiceGroups} />
               {children}
+              <Footer />
             </LeadProvider>
           </SmoothScrollProvider>
         </ThemeProvider>

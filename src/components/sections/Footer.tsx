@@ -1,35 +1,31 @@
+import Link from "next/link";
 import Logo from "@/components/ui/Logo";
+import { indoreServices } from "@/content/locations";
+import { serviceGroups, servicePath } from "@/content/services";
+import { site } from "@/content/site";
 
 const columns = [
+  ...serviceGroups.map((g) => ({
+    heading: g.heading,
+    links: g.services.map((s) => ({ label: s.name, href: servicePath(s.slug) })),
+  })),
   {
-    heading: "Studio",
+    heading: "Company",
     links: [
-      { label: "Services", href: "#services" },
-      { label: "About", href: "#about" },
-      { label: "Process", href: "#process" },
-      { label: "Work", href: "#work" },
-    ],
-  },
-  {
-    heading: "Capabilities",
-    links: [
-      { label: "AI agents & automation", href: "#services" },
-      { label: "Websites & web apps", href: "#services" },
-      { label: "Mobile apps", href: "#services" },
-      { label: "CRM & ERP", href: "#services" },
-      { label: "Custom software", href: "#services" },
+      { label: "About", href: "/about" },
+      { label: "Work", href: "/#work" },
+      { label: "Process", href: "/#process" },
+      { label: "Blog", href: "/blog" },
+      { label: "Indore", href: "/indore" },
+      { label: "Contact", href: "/contact" },
     ],
   },
   {
     heading: "Contact",
     links: [
-      { label: "digigoplus@gmail.com", href: "mailto:digigoplus@gmail.com" },
-      {
-        label: "rajputkapil436@gmail.com",
-        href: "mailto:rajputkapil436@gmail.com",
-      },
-      { label: "+91 96442 42808", href: "tel:+919644242808" },
-      { label: "Start a project", href: "#cta" },
+      ...site.emails.map((e) => ({ label: e, href: `mailto:${e}` })),
+      { label: site.phone.display, href: site.phone.href },
+      { label: "Start a project", href: "/contact" },
     ],
   },
 ];
@@ -42,22 +38,26 @@ export default function Footer() {
       aria-label="Footer"
     >
       <div className="shell">
-        <div className="grid gap-12 py-16 sm:py-20 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,2fr)] lg:gap-20">
+        <div className="grid gap-12 py-16 sm:py-20 lg:grid-cols-[minmax(0,1fr)_minmax(0,3fr)] lg:gap-16">
           <div>
-            <a
-              href="#top"
+            <Link
+              href="/"
               aria-label="Nexopsdev Technologies home"
               className="inline-block rounded-md transition-opacity hover:opacity-70"
             >
               <Logo size="lg" />
-            </a>
+            </Link>
             <p className="mt-6 max-w-xs font-display text-xl leading-snug text-ink">
               We build the software behind{" "}
               <span className="accentuate">great</span> companies.
             </p>
+            <p className="mt-5 max-w-xs text-sm leading-relaxed text-muted">
+              Software and AI development company in {site.location.city},{" "}
+              {site.location.region}, {site.location.country}.
+            </p>
           </div>
 
-          <div className="grid gap-10 sm:grid-cols-3">
+          <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_0.7fr_1.3fr]">
             {columns.map((col) => (
               <nav key={col.heading} aria-label={col.heading}>
                 <h2 className="text-[11px] uppercase tracking-[0.2em] text-faint">
@@ -66,12 +66,12 @@ export default function Footer() {
                 <ul className="mt-5 space-y-3">
                   {col.links.map((l) => (
                     <li key={l.label}>
-                      <a
+                      <Link
                         href={l.href}
-                        className="link-draw text-sm text-muted"
+                        className="link-draw break-words text-sm text-muted"
                       >
                         {l.label}
-                      </a>
+                      </Link>
                     </li>
                   ))}
                 </ul>
@@ -80,20 +80,41 @@ export default function Footer() {
           </div>
         </div>
 
+        <nav
+          aria-label="Services in Indore"
+          className="flex flex-col gap-4 border-t border-line py-8 sm:flex-row sm:items-baseline sm:gap-8"
+        >
+          <h2 className="shrink-0 text-[11px] uppercase tracking-[0.2em] text-faint">
+            In Indore
+          </h2>
+          <ul className="flex flex-wrap gap-x-6 gap-y-2">
+            {indoreServices.map((s) => (
+              <li key={s.slug}>
+                <Link
+                  href={`/indore/${s.slug}`}
+                  className="link-draw text-xs text-muted"
+                >
+                  {s.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
         <div className="flex flex-col-reverse items-center justify-between gap-4 border-t border-line py-8 sm:flex-row">
           <p className="text-xs text-faint">
             © {new Date().getFullYear()} Nexopsdev Technologies. All rights reserved.
           </p>
           <ul className="flex items-center gap-6 text-xs text-faint">
             <li>
-              <a href="#" className="link-draw">
+              <Link href="/privacy" className="link-draw">
                 Privacy
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="link-draw">
+              <Link href="/terms" className="link-draw">
                 Terms
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
