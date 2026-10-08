@@ -6,7 +6,10 @@ import { cn } from "@/lib/utils";
 
 const services = [
   "AI agents & automation",
+  "Chatbot, voicebot or WhatsApp automation",
   "Website or web app",
+  "E-commerce store",
+  "SaaS product",
   "Mobile app",
   "CRM or ERP system",
   "Custom software",

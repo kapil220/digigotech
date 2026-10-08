@@ -1,17 +1,22 @@
-"use client";
-
-import { Globe2, Smartphone, Database, Boxes, Bot } from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import Reveal from "@/components/ui/Reveal";
 import { TopoChip } from "@/components/ui/Topo";
 import SectionCTA from "@/components/lead/SectionCTA";
+import { getService, servicePath, services } from "@/content/services";
 
 /**
- * AI agents lead the section rather than sitting fifth in a grid — it's the
+ * AI agents lead the section rather than sitting in the grid — it's the
  * offering people arrive looking for, and a full-width plate lets it say more.
+ * Every card links to that service's own page.
  */
+const LEAD_SLUG = "ai-agent-development";
+const leadService = getService(LEAD_SLUG)!;
+
 const lead = {
-  icon: Bot,
-  seed: 331,
+  icon: leadService.icon,
+  seed: leadService.seed,
+  href: servicePath(LEAD_SLUG),
   title: "AI Agents & Business Automation",
   copy: "We build agents that actually do the work — answering customers, qualifying leads, chasing invoices, processing documents, keeping your CRM honest. They plug into the tools you already run, escalate to a human when they should, and are monitored so you can see exactly what they did and why.",
   tags: [
@@ -24,36 +29,7 @@ const lead = {
   ],
 };
 
-const services = [
-  {
-    icon: Globe2,
-    seed: 12,
-    title: "Websites & Web Apps",
-    copy: "Marketing sites, dashboards, and complex web platforms — fast, accessible, and built on a modern stack that's a joy to maintain.",
-    tags: ["Next.js", "Design systems", "SEO"],
-  },
-  {
-    icon: Smartphone,
-    seed: 47,
-    title: "Mobile Apps",
-    copy: "Native-feeling iOS and Android apps from a single codebase, with offline sync, push, and the polish your users expect.",
-    tags: ["React Native", "Flutter", "App Store"],
-  },
-  {
-    icon: Database,
-    seed: 83,
-    title: "CRM & ERP Systems",
-    copy: "Operations software tailored to how your business actually runs — pipelines, inventory, billing, and reporting in one place.",
-    tags: ["Workflows", "Integrations", "Analytics"],
-  },
-  {
-    icon: Boxes,
-    seed: 205,
-    title: "Custom Software",
-    copy: "Got a problem off-the-shelf tools can't solve? We architect and ship bespoke products, internal tools, and APIs end to end.",
-    tags: ["APIs", "Automation", "Cloud"],
-  },
-];
+const rest = services.filter((s) => s.slug !== LEAD_SLUG);
 
 export default function Services() {
   return (
@@ -84,10 +60,13 @@ export default function Services() {
           </Reveal>
         </div>
 
-        <div className="mt-16 grid gap-5 sm:mt-20 sm:grid-cols-2">
+        <div className="mt-16 grid gap-5 sm:mt-20 sm:grid-cols-2 lg:grid-cols-3">
           {/* Lead offering: full-width plate */}
-          <Reveal className="group sm:col-span-2">
-            <article className="card relative overflow-hidden p-8 sm:p-10 lg:p-14">
+          <Reveal className="group sm:col-span-2 lg:col-span-3">
+            <Link
+              href={lead.href}
+              className="card relative block overflow-hidden p-8 sm:p-10 lg:p-14"
+            >
               <div className="pointer-events-none absolute -right-24 -top-28 h-[26rem] w-[26rem] text-clay opacity-[0.16] transition-[opacity,color,transform] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105 group-hover:text-accent group-hover:opacity-25">
                 <TopoChip seed={lead.seed} />
               </div>
@@ -119,46 +98,60 @@ export default function Services() {
                       </li>
                     ))}
                   </ul>
+                  <p className="mt-8 inline-flex items-center gap-2 text-sm text-accent">
+                    Explore AI agent development
+                    <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                  </p>
                 </div>
               </div>
-            </article>
+            </Link>
           </Reveal>
 
-          {services.map((s, i) => (
-            <Reveal key={s.title} index={i % 2} className="group h-full">
-              <article className="card relative h-full overflow-hidden p-8 sm:p-10">
+          {rest.map((s, i) => (
+            <Reveal key={s.slug} index={i % 3} className="group h-full">
+              <Link
+                href={servicePath(s.slug)}
+                className="card relative flex h-full flex-col overflow-hidden p-8"
+              >
                 {/* Contour watermark — a plan-view map chip bleeding off the
                     corner. Warms up to the accent on hover. */}
-                <div className="pointer-events-none absolute -right-14 -top-14 h-52 w-52 text-clay opacity-[0.18] transition-[opacity,color,transform] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-110 group-hover:text-accent group-hover:opacity-30">
+                <div className="pointer-events-none absolute -right-14 -top-14 h-44 w-44 text-clay opacity-[0.18] transition-[opacity,color,transform] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-110 group-hover:text-accent group-hover:opacity-30">
                   <TopoChip seed={s.seed} />
                 </div>
 
-                <div className="relative">
+                <div className="relative flex h-full flex-col">
                   <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-line bg-sunken text-accent">
                     <s.icon className="h-5 w-5" strokeWidth={1.6} />
                   </div>
 
                   <h3 className="font-display type-h3 mt-7 text-ink">
-                    {s.title}
+                    {s.name}
                   </h3>
-                  <p className="mt-3 max-w-md text-[15px] leading-relaxed text-muted">
-                    {s.copy}
+                  <p className="mt-3 text-[15px] leading-relaxed text-muted">
+                    {s.summary}
                   </p>
-
-                  <ul className="mt-7 flex flex-wrap gap-2">
-                    {s.tags.map((t) => (
-                      <li
-                        key={t}
-                        className="rounded-full border border-line px-3 py-1 text-xs text-muted transition-colors group-hover:border-line-strong"
-                      >
-                        {t}
-                      </li>
-                    ))}
-                  </ul>
+                  <span className="mt-auto pt-7">
+                    <ArrowUpRight className="h-5 w-5 text-faint transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-accent" />
+                  </span>
                 </div>
-              </article>
+              </Link>
             </Reveal>
           ))}
+
+          <Reveal index={2} className="group h-full">
+            <Link
+              href="/services"
+              className="flex h-full min-h-48 flex-col justify-between rounded-[1.25rem] border border-dashed border-line-strong p-8 transition-colors duration-300 hover:border-accent"
+            >
+              <p className="font-display type-h3 text-ink">
+                See every service in <span className="accentuate">detail</span>
+              </p>
+              <span className="inline-flex items-center gap-2 text-sm text-accent">
+                All services
+                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </span>
+            </Link>
+          </Reveal>
         </div>
 
         <SectionCTA

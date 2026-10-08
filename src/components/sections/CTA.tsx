@@ -1,10 +1,17 @@
 "use client";
 
+import { Fragment } from "react";
 import LeadForm from "@/components/lead/LeadForm";
 import Reveal from "@/components/ui/Reveal";
 import { TopoRidge } from "@/components/ui/Topo";
+import { site } from "@/content/site";
 
-export default function CTA() {
+interface CTAProps {
+  /** Recorded with the lead so the sheet shows which page converted. */
+  source?: string;
+}
+
+export default function CTA({ source = "contact-section" }: CTAProps) {
   return (
     <section
       id="cta"
@@ -40,29 +47,23 @@ export default function CTA() {
 
           <Reveal index={3}>
             <div className="mx-auto mt-11 max-w-xl rounded-[1.5rem] border border-line bg-paper p-6 shadow-[var(--shadow-raise)] sm:p-9">
-              <LeadForm source="contact-section" submitLabel="Get in touch" />
+              <LeadForm source={source} submitLabel="Get in touch" />
             </div>
           </Reveal>
 
           <Reveal index={4}>
             <p className="mt-7 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-xs text-faint">
               <span>Or reach us directly</span>
-              <a
-                href="mailto:digigoplus@gmail.com"
-                className="link-draw text-muted"
-              >
-                digigoplus@gmail.com
-              </a>
-              <span aria-hidden="true">·</span>
-              <a
-                href="mailto:rajputkapil436@gmail.com"
-                className="link-draw text-muted"
-              >
-                rajputkapil436@gmail.com
-              </a>
-              <span aria-hidden="true">·</span>
-              <a href="tel:+919644242808" className="link-draw text-muted">
-                +91 96442 42808
+              {site.emails.map((email) => (
+                <Fragment key={email}>
+                  <a href={`mailto:${email}`} className="link-draw text-muted">
+                    {email}
+                  </a>
+                  <span aria-hidden="true">·</span>
+                </Fragment>
+              ))}
+              <a href={site.phone.href} className="link-draw text-muted">
+                {site.phone.display}
               </a>
             </p>
           </Reveal>
