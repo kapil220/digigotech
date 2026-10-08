@@ -26,8 +26,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://digigotech.com"),
-  title: "DigiGoTech — AI agents and software for growing businesses",
+  metadataBase: new URL("https://nexopsdev.com"),
+  title: "Nexopsdev Technologies — AI agents and software for growing businesses",
   description:
     "A senior software studio building AI agents and business automation, websites, mobile apps, CRM & ERP systems, and custom platforms for founders and growing businesses.",
   keywords: [
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     "custom software",
   ],
   openGraph: {
-    title: "DigiGoTech — Digital Product Studio",
+    title: "Nexopsdev Technologies — Digital Product Studio",
     description:
       "AI agents and business automation, websites, mobile apps, CRM & ERP, and custom software — designed and engineered to scale.",
     type: "website",
@@ -67,7 +67,7 @@ export default function RootLayout({
             the wrong palette. Kept inline and tiny on purpose. */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem("digigotech-theme");if(t!=="light"&&t!=="dark"){t=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}document.documentElement.setAttribute("data-theme",t)}catch(e){document.documentElement.setAttribute("data-theme","light")}})()`,
+            __html: `(function(){try{var t=localStorage.getItem("nexopsdev-theme");if(t!=="light"&&t!=="dark"){t=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}document.documentElement.setAttribute("data-theme",t)}catch(e){document.documentElement.setAttribute("data-theme","light")}})()`,
           }}
         />
         <a

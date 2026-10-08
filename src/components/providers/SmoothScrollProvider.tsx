@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect } from "react";
-import type Lenis from "lenis";
+import Lenis from "lenis";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { prefersReducedMotion } from "@/lib/utils";
 
 /** Module-level handle so any component can request a smooth scroll-to. */
@@ -29,43 +31,30 @@ export default function SmoothScrollProvider({
     // Respect reduced-motion: leave native scrolling untouched.
     if (prefersReducedMotion()) return;
 
-    let cleanup = () => {};
+    gsap.registerPlugin(ScrollTrigger);
 
-    (async () => {
-      const [{ default: LenisCtor }, { default: gsap }, { ScrollTrigger }] =
-        await Promise.all([
-          import("lenis"),
-          import("gsap"),
-          import("gsap/ScrollTrigger"),
-        ]);
+    const lenis = new Lenis({
+      duration: 1.15,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+      touchMultiplier: 1.6,
+    });
+    lenisInstance = lenis;
 
-      gsap.registerPlugin(ScrollTrigger);
+    lenis.on("scroll", ScrollTrigger.update);
 
-      const lenis = new LenisCtor({
-        duration: 1.15,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        smoothWheel: true,
-        touchMultiplier: 1.6,
-      });
-      lenisInstance = lenis;
+    const tick = (time: number) => lenis.raf(time * 1000);
+    gsap.ticker.add(tick);
+    gsap.ticker.lagSmoothing(0);
 
-      lenis.on("scroll", ScrollTrigger.update);
+    // Let ScrollTrigger drive refreshes against Lenis' scroll position.
+    ScrollTrigger.refresh();
 
-      const tick = (time: number) => lenis.raf(time * 1000);
-      gsap.ticker.add(tick);
-      gsap.ticker.lagSmoothing(0);
-
-      // Let ScrollTrigger drive refreshes against Lenis' scroll position.
-      ScrollTrigger.refresh();
-
-      cleanup = () => {
-        gsap.ticker.remove(tick);
-        lenis.destroy();
-        lenisInstance = null;
-      };
-    })();
-
-    return () => cleanup();
+    return () => {
+      gsap.ticker.remove(tick);
+      lenis.destroy();
+      lenisInstance = null;
+    };
   }, []);
 
   return <>{children}</>;

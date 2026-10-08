@@ -46,7 +46,7 @@ function ProjectCard({
         />
         <div
           aria-hidden="true"
-          className="absolute inset-0 bg-gradient-to-t from-[#141413]/45 via-transparent to-transparent"
+          className="absolute inset-0 bg-gradient-to-t from-[#041034]/55 via-transparent to-transparent"
         />
         <span className="absolute left-4 top-4 rounded-full border border-white/25 bg-black/35 px-3 py-1 text-[10px] uppercase tracking-[0.16em] text-white/90 backdrop-blur-sm">
           {p.category}

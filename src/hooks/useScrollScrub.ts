@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useRef, type RefObject } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { prefersReducedMotion } from "@/lib/utils";
 
 interface ScrollScrubOptions {
@@ -40,42 +42,28 @@ export function useScrollScrub(
       return;
     }
 
-    let ctx: gsap.Context | undefined;
-    let cancelled = false;
+    gsap.registerPlugin(ScrollTrigger);
 
-    // Dynamically import GSAP so it stays out of the initial bundle and never
-    // runs during SSR.
-    (async () => {
-      const [{ default: gsap }, { ScrollTrigger }] = await Promise.all([
-        import("gsap"),
-        import("gsap/ScrollTrigger"),
-      ]);
-      if (cancelled) return;
-
-      gsap.registerPlugin(ScrollTrigger);
-
-      ctx = gsap.context(() => {
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: el,
-            start: "top top",
-            end,
-            pin,
-            scrub: 1,
-            anticipatePin: 1,
-            invalidateOnRefresh: true,
-            onUpdate: (self) => {
-              progress.current = self.progress;
-            },
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: el,
+          start: "top top",
+          end,
+          pin,
+          scrub: 1,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+          onUpdate: (self) => {
+            progress.current = self.progress;
           },
-        });
-        build?.(tl);
-      }, el);
-    })();
+        },
+      });
+      build?.(tl);
+    }, el);
 
     return () => {
-      cancelled = true;
-      ctx?.revert();
+      ctx.revert();
     };
     // build is intentionally referenced once on mount; callers pass a stable fn.
     // eslint-disable-next-line react-hooks/exhaustive-deps
