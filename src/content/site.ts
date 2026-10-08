@@ -8,7 +8,8 @@
 export const site = {
   name: "Nexopsdev Technologies",
   shortName: "Nexopsdev",
-  url: "https://nexopsdev.com",
+  /** Must be the host the domain actually serves from: the bare domain redirects to www. */
+  url: "https://www.nexopsdev.com",
   tagline: "Software and AI development company in Indore, India",
   description:
     "Nexopsdev Technologies is a software and AI development company in Indore, India. We build websites, e-commerce stores, SaaS products, ERP and CRM systems, mobile apps, AI agents, chatbots, voicebots and WhatsApp automation.",
@@ -17,7 +18,7 @@ export const site = {
     e164: "+919644242808",
     href: "tel:+919644242808",
   },
-  emails: ["digigoplus@gmail.com", "rajputkapil436@gmail.com"],
+  emails: ["nexopsdev@gmail.com", "rajputkapil436@gmail.com"],
   /** No street address is published: the business serves clients remotely. */
   location: {
     city: "Indore",
